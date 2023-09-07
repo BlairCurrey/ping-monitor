@@ -1,0 +1,224 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ping Log Visualization</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .log-entry {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin: 1px;
+      }
+      .success {
+        background-color: green;
+      }
+      .failed {
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="logContainer"></div>
+    <script>
+      fetch("ping_log.txt")
+        .then((response) => response.text())
+        .then((logData) => {
+          const logContainer = document.getElementById("logContainer");
+          const logLines = logData.trim().split("\n");
+          logLines.forEach((line) => {
+            const entry = document.createElement("div");
+            entry.classList.add("log-entry");
+            if (line.includes("success")) {
+              entry.classList.add("success");
+            } else {
+              entry.classList.add("failed");
+            }
+            logContainer.appendChild(entry);
+          });
+        });
+    </script>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ping Log Visualization</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .log-entry {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+      }
+      .timestamp {
+        font-size: 12px;
+        margin-right: 10px;
+      }
+      .status-block {
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+      }
+      .success {
+        background-color: green;
+      }
+      .failed {
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div class="input-group">
+      <label for="startTime">Start Time: </label>
+      <input type="datetime-local" id="startTime" />
+      <label for="endTime">End Time: </label>
+      <input type="datetime-local" id="endTime" />
+      <button id="filterButton">Filter</button>
+    </div> -->
+    <div id="logContainer"></div>
+    <script>
+      fetch("ping_log.txt")
+        .then((response) => response.text())
+        .then((logData) => {
+          const logContainer = document.getElementById("logContainer");
+          const logLines = logData.trim().split("\n");
+          logLines.forEach((line) => {
+            const entry = document.createElement("div");
+            entry.classList.add("log-entry");
+
+            const timestamp = line.substr(0, 19);
+            const timestampElement = document.createElement("span");
+            timestampElement.classList.add("timestamp");
+            timestampElement.textContent = timestamp;
+
+            const statusElement = document.createElement("div");
+            statusElement.classList.add("status-block");
+            if (line.includes("success")) {
+              statusElement.classList.add("success");
+            } else {
+              statusElement.classList.add("failed");
+            }
+
+            entry.appendChild(timestampElement);
+            entry.appendChild(statusElement);
+            logContainer.appendChild(entry);
+          });
+        });
+    </script>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ping Log Visualization</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .log-entry {
+        display: flex;
+        align-items: center;
+        margin: 5px 0;
+      }
+      .timestamp {
+        font-size: 12px;
+        margin-right: 10px;
+      }
+      .status-block {
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+      }
+      .success {
+        background-color: green;
+      }
+      .failed {
+        background-color: red;
+      }
+      .input-group {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="logContainer"></div>
+    <div class="input-group">
+      <label for="startTime">Start Time: </label>
+      <input type="datetime-local" id="startTime" />
+      <label for="endTime">End Time: </label>
+      <input type="datetime-local" id="endTime" />
+      <button id="filterButton">Filter</button>
+    </div>
+    <script>
+      fetch("ping_log.txt")
+        .then((response) => response.text())
+        .then((logData) => {
+          const originalLogLines = logData.trim().split("\n");
+          let filteredLogLines = [...originalLogLines];
+
+          const logContainer = document.getElementById("logContainer");
+
+          const updateLogDisplay = () => {
+            logContainer.innerHTML = "";
+            filteredLogLines.forEach((line) => {
+              const entry = document.createElement("div");
+              entry.classList.add("log-entry");
+
+              const timestamp = line.substr(0, 19);
+              const timestampElement = document.createElement("span");
+              timestampElement.classList.add("timestamp");
+              timestampElement.textContent = timestamp;
+
+              const statusElement = document.createElement("div");
+              statusElement.classList.add("status-block");
+              if (line.includes("success")) {
+                statusElement.classList.add("success");
+              } else {
+                statusElement.classList.add("failed");
+              }
+
+              entry.appendChild(timestampElement);
+              entry.appendChild(statusElement);
+              logContainer.appendChild(entry);
+            });
+          };
+
+          // const filterButton = document.getElementById("filterButton");
+          // filterButton.addEventListener("click", () => {
+          //   const startTime = new Date(
+          //     document.getElementById("startTime").value
+          //   );
+          //   const endTime = new Date(document.getElementById("endTime").value);
+
+          //   filteredLogLines = originalLogLines.filter((line) => {
+          //     const timestamp = new Date(line.substr(0, 19));
+          //     return timestamp >= startTime && timestamp <= endTime;
+          //   });
+
+          //   updateLogDisplay();
+          // });
+
+          updateLogDisplay();
+        });
+    </script>
+  </body>
+</html> -->

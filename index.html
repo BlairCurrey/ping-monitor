@@ -1,0 +1,106 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ping Success/Failure Visualization</title>
+  </head>
+  <body>
+    <h1>Ping Success/Failure Over Time</h1>
+    <canvas id="pingCanvas"></canvas>
+
+    <script>
+      const logFile = "ping_log.txt";
+
+      const canvas = document.getElementById("pingCanvas");
+      const ctx = canvas.getContext("2d");
+
+      console.log();
+
+      fetch(logFile)
+        .then((response) => response.text())
+        .then((data) => {
+          console.log({ data });
+          const lines = data.trim().split("\n");
+          const timestamps = [];
+          const statuses = [];
+
+          console.log({ lines });
+
+          lines.forEach((line) => {
+            const [timestampStr, status] = line.split(" ");
+            timestamps.push(new Date(timestampStr));
+            statuses.push(status);
+          });
+
+          ctx.strokeStyle = "green";
+          ctx.beginPath();
+          timestamps.forEach((timestamp, index) => {
+            if (statuses[index] === "success") {
+              ctx.lineTo(timestamp, 10);
+            }
+          });
+          ctx.stroke();
+
+          ctx.strokeStyle = "red";
+          ctx.beginPath();
+          timestamps.forEach((timestamp, index) => {
+            if (statuses[index] === "failed") {
+              ctx.lineTo(timestamp, 30);
+            }
+          });
+          ctx.stroke();
+        })
+        .catch((error) => console.error("Error loading log file:", error));
+    </script>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ping Log Visualization</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .log-entry {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin: 1px;
+      }
+      .success {
+        background-color: green;
+      }
+      .failed {
+        background-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="logContainer"></div>
+    <script>
+      fetch("ping_log.txt")
+        .then((response) => response.text())
+        .then((logData) => {
+          const logContainer = document.getElementById("logContainer");
+          const logLines = logData.trim().split("\n");
+          logLines.forEach((line) => {
+            const entry = document.createElement("div");
+            entry.classList.add("log-entry");
+            if (line.includes("success")) {
+              entry.classList.add("success");
+            } else {
+              entry.classList.add("failed");
+            }
+            logContainer.appendChild(entry);
+          });
+        });
+    </script>
+  </body>
+</html>
