@@ -1,4 +1,4 @@
-Simple networkin monitoring utility. I wrote this to help monitor network drops while troubleshooting a flakey connection. `ping-monitor.sh` sends a single packet to google every 30 seconds by default and logs to terminal and file.
+Simple network monitoring utility. I wrote this to help monitor network drops while troubleshooting a flakey connection. `ping-monitor.sh` sends a single packet to google every 30 seconds by default and logs to terminal and file.
 
 Run the bash script:
 
